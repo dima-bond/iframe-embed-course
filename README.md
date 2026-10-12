@@ -2,6 +2,14 @@
 
 A practical, checkpoint-based course for learning how cross-origin iframes and third-party embed scripts work in the browser.
 
+## Begin the course
+
+Open this repository in your coding agent and ask:
+
+> Start the course from the current checkpoint in `AGENTS.md`. Follow the teaching loop and do not open later checkpoints early.
+
+The course begins with observation only. The host deliberately does not contain an iframe yet; embedding it is the first visible implementation change.
+
 The project starts with three small applications running on separate local origins:
 
 - **Host** — a simulated customer website at `http://localhost:3000`
@@ -81,14 +89,6 @@ iframe-embed-course/
 │   └── dev.mjs               # Starts all local services
 └── package.json
 ```
-
-## Begin the course
-
-Open this repository in your coding agent and ask:
-
-> Start the course from the current checkpoint in `AGENTS.md`. Follow the teaching loop and do not open later checkpoints early.
-
-The course begins with observation only. The host deliberately does not contain an iframe yet; embedding it is the first visible implementation change.
 
 ## Course outline
 

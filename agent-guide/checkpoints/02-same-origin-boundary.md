@@ -6,6 +6,12 @@ Explain Same-Origin Policy as a browser confidentiality boundary: one site must 
 
 The host may hold an iframe element reference, and `iframe.contentWindow` identifies the child window, but cross-origin code cannot traverse into `contentWindow.document`.
 
+Briefly distinguish Same-Origin Policy from CORS before mentioning CORS in the experiment:
+
+- **Same-Origin Policy** is the browser's default restriction. It prevents JavaScript from one origin from freely reading another origin's DOM and other protected data.
+- **CORS** is an HTTP permission sent by a server. It can allow JavaScript from an approved origin to read that server's `fetch` response.
+- CORS affects HTTP response access; it does not grant access to `iframe.contentWindow.document`. Cross-origin iframe communication still requires an explicit mechanism such as `postMessage`.
+
 Prediction: ask what should happen if the host tries to read the widget's `<h1>`.
 
 ## Scoped change
@@ -25,11 +31,9 @@ Do not solve the boundary yet.
 
 ## Understanding questions
 
-1. Why is “the iframe is visible” different from “the parent may read the iframe DOM”?
+1. Which iframe-related objects can the host access, and at what point does the browser block cross-origin traversal?
 2. Would adding an API CORS header make `iframe.contentWindow.document` readable?
-3. What browser feature will we need for intentional cross-origin communication?
 
 Commit after approval: `feat: demonstrate iframe origin boundary`.
 
 Next: [Checkpoint 3](03-responsive-host-sizing.md)
-

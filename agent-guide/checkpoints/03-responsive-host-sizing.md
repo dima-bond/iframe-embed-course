@@ -2,36 +2,29 @@
 
 ## Theory to teach first
 
-Separate two problems:
+Explain that the iframe element belongs to the host document, so the host controls its place and outer dimensions. The widget controls only the document rendered inside that rectangle.
 
-- Responsive container sizing: the host can make the iframe box follow available width or an aspect ratio.
-- Content-driven height: the host cannot use CSS `height: auto` to measure a cross-origin document's content.
+An iframe is a replaced element. `width: 100%` makes its outer box follow the width of the host container. A fixed height or `aspect-ratio` can define the other dimension. Content-driven height is a separate problem that will be introduced later, when the course has established cross-origin messaging.
 
-An iframe is a replaced element. `width: 100%` means 100% of the parent content box, but its internal document does not participate in the parent's normal layout calculation.
-
-Prediction: ask whether `height: auto` should grow when the widget adds another paragraph.
+Prediction: ask what should happen to the iframe width when the browser window becomes narrower.
 
 ## Scoped change
 
 - Move iframe presentation into a clear host CSS class.
-- Make the iframe `display: block`, `width: 100%`, with a sensible fixed/minimum height and no border.
-- Use a media query or `clamp()` to demonstrate a host-owned responsive size.
-- Add one widget action that appends enough content to overflow the current iframe height.
+- Make the iframe `display: block`, `width: 100%`, with a sensible fixed height and no border.
+- Use the existing host container and a narrow viewport to demonstrate host-owned responsive width.
 
-Do not implement automatic height messaging.
+Do not change widget content or implement automatic height messaging.
 
 ## Evidence
 
 - Resize the host viewport and watch iframe width follow the parent.
-- Add widget content and observe the inner scrollbar or clipping while the outer iframe height remains unchanged.
 - Inspect the iframe's computed size from the host document.
 
 ## Understanding questions
 
-1. Why does `width: 100%` work while `height: auto` does not fit cross-origin content?
-2. Which page owns the iframe rectangle in the outer layout?
+1. What does `width: 100%` measure the iframe against?
 
 Commit after approval: `feat: make iframe container responsive`.
 
 Next: [Checkpoint 4](04-first-postmessage.md)
-
