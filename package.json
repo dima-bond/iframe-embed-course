@@ -1,0 +1,16 @@
+{
+  "name": "iframe-embed-course",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:host": "node apps/host/server.mjs",
+    "dev:widget": "node apps/widget/server.mjs",
+    "dev:api": "node apps/api/server.mjs",
+    "check": "node --check scripts/dev.mjs && node --check apps/host/server.mjs && node --check apps/host/app.js && node --check apps/widget/server.mjs && node --check apps/widget/app.js && node --check apps/api/server.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

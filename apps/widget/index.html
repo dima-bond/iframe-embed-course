@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bike Finder Widget</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="widget-card">
+      <p class="eyebrow">Widget · localhost:4000</p>
+      <h1>Bike Finder</h1>
+      <p>A separate document that will later live inside an iframe.</p>
+
+      <fieldset>
+        <legend>Where are you planning to ride?</legend>
+        <label><input type="radio" name="terrain" value="city" /> City</label>
+        <label><input type="radio" name="terrain" value="gravel" /> Gravel</label>
+        <label><input type="radio" name="terrain" value="trail" /> Trails</label>
+      </fieldset>
+
+      <button type="button">Show recommendation</button>
+      <p class="result" aria-live="polite"></p>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
