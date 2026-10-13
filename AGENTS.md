@@ -41,7 +41,8 @@ The learner has authorized local lesson commits after they explicitly approve ea
 ## Scope and implementation rules
 
 - Keep the first mechanism implementation in plain HTML, CSS, and JavaScript. Do not add React or a bundler during the core course.
-- Keep the three origins distinct: host `http://localhost:3000`, widget `http://localhost:4000`, API `http://localhost:5000`.
+- Keep the three origins distinct: host `http://localhost:3000`, widget `http://localhost:4000`, API `http://localhost:5050` by default.
+- If a server reports `EADDRINUSE` or requests reach an unrelated local service, do not ask the learner to disable an operating-system service by default. Identify the collision, choose an available nearby port, and keep every current code/config reference aligned. The API supports `COURSE_API_PORT`; browser code introduced later must use the same actual API origin. Explain that changing the port changes the origin but does not change the CORS mechanism being studied.
 - Different ports mean different origins even when the hostname is the same.
 - Treat the public embed script and its message schema as APIs. Keep their names searchable and centralized.
 - Validate `postMessage` origin, window source, message shape, and numeric bounds before changing host DOM.
@@ -75,4 +76,3 @@ The repository contains three dependency-free local servers. The host and widget
 16. [Production Boundaries and Tradeoffs](agent-guide/checkpoints/16-production-boundaries.md)
 17. [Integrate the Complete Widget](agent-guide/checkpoints/17-complete-integration.md)
 18. [Final Knowledge Check](agent-guide/checkpoints/18-final-knowledge-check.md)
-

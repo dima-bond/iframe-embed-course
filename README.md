@@ -14,7 +14,7 @@ The project starts with three small applications running on separate local origi
 
 - **Host** — a simulated customer website at `http://localhost:3000`
 - **Widget** — an independently hosted embedded application at `http://localhost:4000`
-- **API** — a service used by the widget at `http://localhost:5000`
+- **API** — a service used by the widget at `http://localhost:5050`
 
 You will gradually connect them while observing each browser mechanism in DevTools. The finished integration includes secure cross-window messaging, content-driven iframe height, public embed configuration, cross-origin API requests, signed client identity, embedding restrictions, and lifecycle cleanup.
 
@@ -53,9 +53,17 @@ Then open:
 
 - Host: http://localhost:3000
 - Widget: http://localhost:4000
-- API health check: http://localhost:5000/health
+- API health check: http://localhost:5050/health
 
 Stop all three servers with `Ctrl+C`.
+
+Port `5050` avoids the common macOS AirPlay Receiver collision on port `5000`. If `5050` is already in use, start the course with another API port:
+
+```bash
+COURSE_API_PORT=5051 pnpm dev
+```
+
+When later checkpoints add a browser-side API URL, keep it aligned with the selected port. The number itself is not important; a different port still creates a different origin.
 
 ## How the course works
 

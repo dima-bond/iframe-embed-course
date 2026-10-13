@@ -20,7 +20,7 @@ Host document :3000
 └── later contains an iframe box
     └── Widget document :4000
 
-Widget JavaScript :4000 ──HTTP request──> API :5000
+Widget JavaScript :4000 ──HTTP request──> API :5050
 ```
 
 ## Observation
@@ -47,4 +47,3 @@ Answer questions, summarize the three responsibilities, and ask if the learner i
 4. Only then open Checkpoint 1.
 
 Next: [Checkpoint 1](01-embed-first-iframe.md)
-

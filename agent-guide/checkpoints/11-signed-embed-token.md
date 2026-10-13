@@ -2,21 +2,65 @@
 
 ## Theory to teach first
 
-Introduce a signed token as a sealed claim. The payload may remain readable; integrity comes from the server-only signing key. If someone changes `clientId`, origin, or expiry without that key, signature verification fails.
+Start from the problem proved in Checkpoint 10: the API receives a request from browser code, but every ordinary value supplied by that browser can be edited. The API therefore needs client information created by a party it already trusts and evidence that the information was not changed in transit.
+
+### Why the host backend is involved
+
+Explain the initial trust relationship before showing the full flow:
+
+- The Host backend represents a known partner/customer integration.
+- The API recognizes that backend through a long-lived partner credential.
+- That credential cannot be placed in `embed.js`, HTML, local storage, or the iframe because anything delivered to the browser can be read and copied.
+- The Host backend therefore exchanges its long-lived credential for a short-lived, narrowly scoped embed token that is safe enough to pass through the browser.
+
+The browser remains untrusted. It acts as a courier for the embed token; it does not get the server credential and does not decide the trusted `clientId`.
+
+### What the signed token contains
+
+Describe the course token as two conceptual parts:
+
+```text
+encodedPayload.signature
+```
+
+The payload contains claims such as `clientId`, allowed parent origin, purpose, issued time, and expiry. Encoding makes those values transportable; it does not hide or protect them.
+
+The API creates the signature from the encoded payload and a server-only signing key:
+
+```text
+signature = HMAC(encodedPayload, signingKey)
+```
+
+HMAC can be introduced simply as a keyed cryptographic calculation. The same payload and secret key produce the expected signature. Changing even one payload value produces a different expected signature, and someone without the key cannot create a valid replacement.
+
+Do not imply encryption:
+
+- Base64 or Base64url is reversible encoding.
+- Encryption hides content.
+- A signature protects integrity and proves that a trusted signer created the claims.
+
+The payload may remain readable. If someone changes `clientId`, origin, or expiry while keeping the old signature, verification fails.
+
+### Why this flow is used
 
 Use a realistic local trust flow:
 
 ```text
-Host backend :3000 owns a demo partner credential
-→ asks API :5000 for a short-lived embed token
-→ host page gives token to embed.js
-→ iframe sends token to API
-→ API verifies signature and derives clientId from verified claims
+1. Browser asks its Host backend :3000 for embed configuration
+2. Host backend uses its partner credential in a server-to-server request
+3. API :5050 (or the configured port) validates that credential
+4. API creates claims and signs a short-lived embed token
+5. Host page passes the token through embed.js to the iframe
+6. Widget sends the token to the API as a Bearer token
+7. API recomputes and compares the signature, then validates the claims
+8. Only then does the API use the verified clientId for authorization
 ```
 
-The browser must never receive the partner credential or signing key. The embed token is intentionally short-lived and narrowly scoped.
+Explain why the API signs and later verifies its own token: issuance converts an existing server-to-server trust relationship into a temporary browser-carried credential. Verification lets the API recover trusted claims without trusting new values asserted by browser code on every request.
 
-Prediction: ask whether Base64-encoding the client ID would provide the same guarantee as signing it.
+Also state the limit clearly: signing does not make the token secret. Anyone who steals a valid Bearer token may replay it until it expires, which is why the token must be short-lived, narrowly scoped, sent only over HTTPS in production, and never logged.
+
+Prediction: after explaining the mechanism, ask what the API should do if a user changes `clientId` in the payload but leaves the original signature unchanged, and which comparison should fail.
 
 ## Scoped change
 
@@ -36,11 +80,10 @@ Use Node's built-in crypto APIs; do not add a JWT dependency merely to hide the 
 
 ## Understanding questions
 
-1. Which secret stays on servers, and which short-lived value reaches the browser?
-2. Why may a signed token payload be readable without becoming forgeable?
-3. Who should derive the trusted `clientId`: browser code or API verification?
+1. Why does the Host backend use its partner credential to obtain a short-lived token instead of putting that credential in `embed.js`?
+2. If the payload is readable, what does the HMAC signature protect, and what does it not protect?
+3. What must the API verify before it may trust and use the token's `clientId`?
 
 Commit after approval: `feat: authenticate widget with embed token`.
 
 Next: [Checkpoint 12](12-token-negative-cases.md)
-

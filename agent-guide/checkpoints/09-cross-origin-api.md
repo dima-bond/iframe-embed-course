@@ -2,7 +2,9 @@
 
 ## Theory to teach first
 
-The widget script runs with the widget origin, even when displayed on the host page. A fetch from `localhost:4000` to `localhost:5000` is therefore cross-origin.
+The widget script runs with the widget origin, even when displayed on the host page. A fetch from `localhost:4000` to the default API at `localhost:5050` is therefore cross-origin.
+
+The port number is configuration, not the lesson. Before editing, confirm which API URL the running server printed. If the default port was occupied, use the selected `COURSE_API_PORT` consistently in one clearly named widget-side API origin constant. Do not ask the learner to disable an unrelated operating-system service merely to preserve port `5050`.
 
 Same-Origin Policy prevents JavaScript from reading an unauthorized cross-origin response. CORS is the API's HTTP-level permission for selected caller origins. It does not authenticate the caller, grant iframe DOM access, or protect against all request sending.
 
@@ -13,6 +15,7 @@ Prediction: ask which origin the API sees as the browser caller: host `3000` or 
 ## Scoped change
 
 - Add a small recommendation endpoint to the API.
+- Define the widget's API origin once and use the actual running API port rather than scattering a numeric port through request code.
 - Fetch it from the widget after terrain selection.
 - First observe the browser CORS failure with no permission header.
 - Then allow only the widget origin and make the request readable.
