@@ -11,7 +11,7 @@ Purpose: test whether the learner can retrieve and connect the mechanisms withou
 - If incomplete, name what was correct and explain the missing part simply.
 - If incorrect, correct the model directly with a small example.
 - Ask at most one follow-up when a central misconception remains.
-- After feedback, ask whether the learner is ready for the next question.
+- After feedback, immediately ask the next numbered question. Do not ask whether the learner is ready to continue; the learner can interrupt with a question whenever clarification is needed.
 - Privately track every initially incomplete, incorrect, or absent topic for the final evaluation.
 - Do not use points, percentages, or numeric scoring.
 
