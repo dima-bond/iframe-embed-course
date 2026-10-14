@@ -13,20 +13,29 @@ Explain the four checks:
 
 The event `origin` is browser-supplied metadata. A string such as `data.origin` is sender-controlled and proves nothing.
 
+Make the expected source symmetric and concrete:
+
+- When Host receives from Widget, require `event.source === iframe.contentWindow`.
+- When Widget receives from Host, require `event.source === window.parent`.
+
+The expected origin changes with the direction as well: Host expects the Widget origin, while Widget expects the Host origin.
+
 Prediction: ask whether checking only `event.data.type` is sufficient.
 
 ## Scoped change
 
 - Centralize message type names in clearly named constants on both sides.
 - Validate origin, source, object shape, type, and selection allowlist in the host.
-- Add a host-side rejected-message log for the experiment.
-- Demonstrate one malformed message from the console and prove it is ignored.
+- Apply the same receiver rule in the Widget for Host → Widget messages: expect the Host origin, require `event.source === window.parent`, and validate the `host:ping` message shape.
+- Add rejected-message logs on both receiving sides for the experiment.
+- Demonstrate malformed messages in both directions and prove they are ignored.
 
 ## Evidence
 
 - A valid widget selection updates the host.
-- A message with a correct-looking type but wrong payload is rejected.
-- Explain each early return in the receiver.
+- A valid `host:ping` reaches the targeted Widget.
+- Messages with a correct-looking type but wrong origin, source, or payload are rejected by the relevant receiver.
+- Explain each early return in both receivers and identify the expected `event.source` for each direction.
 
 ## Understanding questions
 
@@ -37,4 +46,3 @@ Prediction: ask whether checking only `event.data.type` is sufficient.
 Commit after approval: `refactor: validate iframe message contract`.
 
 Next: [Checkpoint 6](06-dynamic-height.md)
-

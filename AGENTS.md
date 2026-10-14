@@ -61,7 +61,7 @@ The repository contains three dependency-free local servers. The host and widget
 1. [Embed the First Iframe](agent-guide/checkpoints/01-embed-first-iframe.md)
 2. [Prove the Same-Origin Boundary](agent-guide/checkpoints/02-same-origin-boundary.md)
 3. [Responsive Size Owned by the Host](agent-guide/checkpoints/03-responsive-host-sizing.md)
-4. [Send the First Message](agent-guide/checkpoints/04-first-postmessage.md)
+4. [Exchange the First Messages](agent-guide/checkpoints/04-first-postmessage.md)
 5. [Define a Safe Message Contract](agent-guide/checkpoints/05-safe-message-contract.md)
 6. [Synchronize Dynamic Height](agent-guide/checkpoints/06-dynamic-height.md)
 7. [Create the Public Embed Script](agent-guide/checkpoints/07-public-embed-script.md)

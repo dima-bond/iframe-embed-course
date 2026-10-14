@@ -71,17 +71,17 @@ Ask: “Which configuration belongs in iframe URL parameters, and why is a clien
 
 Expected: non-secret startup config such as theme/locale; browser-visible/editable values do not prove identity.
 
-### 10. What does CORS do?
+### 10. Allow the Widget to read an API response
 
-Ask: “What does CORS permit, and which iframe/security problems does it not solve?”
+Ask: “The Widget runs on `localhost:4000` and fetches the API on `localhost:5050` (or the configured API port). The API returns `200`, but the browser does not let Widget JavaScript read the response. Why, and what must the API return to allow the read?”
 
-Expected: permits browser JavaScript from named origins to read cross-origin responses; not authentication, DOM access, frame authorization, or complete CSRF protection.
+Expected: the ports create different origins, so the browser applies CORS; the API must return an appropriate `Access-Control-Allow-Origin` value for the Widget origin, after which the browser may expose the response to Widget JavaScript.
 
-### 11. Why is clientId not authentication?
+### 11. Compare the trust boundary of embed.js and the iframe
 
-Ask: “Why can't the API trust `clientId` from HTML, URL, header, or request body?”
+Ask: “Host loads `embed.js` from the Widget provider and that script creates a cross-origin iframe. With whose privileges does `embed.js` execute, and how is that different from JavaScript running inside the iframe?”
 
-Expected: all are controlled/replayable by browser user; identifier has no integrity evidence.
+Expected: the external script executes as part of the Host document with Host-page JavaScript privileges, so it can access Host DOM and other JavaScript-accessible Host state; code inside the cross-origin iframe runs in the Widget origin and remains isolated from Host DOM by Same-Origin Policy. Loading `embed.js` therefore makes the provider script a trusted third-party dependency even though the created iframe remains isolated.
 
 ### 12. What does the signed token prove?
 
@@ -95,11 +95,16 @@ Ask: “Why is a valid signature insufficient by itself?”
 
 Expected: authentic token may be expired, for wrong audience/purpose/origin; claims constrain reuse and lifetime.
 
-### 14. Compare the browser controls
+### 14. Choose the browser control for each boundary
 
-Ask: “Compare Same-Origin Policy, CORS, `frame-ancestors`, and iframe `sandbox` in one sentence each.”
+Ask: “Match each scenario to the browser control that primarily governs it: Host tries to read the cross-origin Widget DOM; Widget tries to read an API response; an unknown site tries to embed Widget; Host wants to remove capabilities from Widget.”
 
-Expected: SOP limits cross-origin access; CORS authorizes response reading; frame-ancestors controls who may frame; sandbox removes/restores iframe capabilities.
+Expected:
+
+- Host reading cross-origin Widget DOM → Same-Origin Policy.
+- Widget reading the cross-origin API response → CORS response policy.
+- Unknown site embedding Widget → CSP `frame-ancestors` from the Widget response.
+- Host removing Widget capabilities → iframe `sandbox` tokens chosen by Host.
 
 ### 15. Trace the complete architecture
 
